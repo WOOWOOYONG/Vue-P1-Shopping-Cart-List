@@ -21,32 +21,35 @@
         <h3 class="text-center mt-5" v-if="! itemSelected.name">
           請先選擇寶貝球
         </h3>
-        <section class="product-area container row mt-5">
-          <div
-            class="card col-md-6 col-xl-3 text-center border-0 list-group"
-            v-for="item in products"
-            :key="item.name"
-          >
-            <a
-              href="#"
-              class="list-group-item list-group-item-action list-group-item-light"
-              :class="{'active': itemSelected.name == item.name }"
-              @click.prevent="selectProduct(item)"
+        <section class="product-area container mt-5">
+          <div class="row g-5">
+            <div
+              class="card col-md-6 col-xl-3 text-center border-0 list-group p-3"
+              v-for="item in products"
+              :key="item.name"
             >
-              <img
-                :src="item.imgUrl"
-                alt="product-img"
-                class="rounded img-fluid mt-3"
-              />
-              <div class="info mt-3">
-                <p>{{item.name}}</p>
-                <p>$ {{item.price}}</p>
-              </div>
-            </a>
+              <a
+                href="#"
+                class="list-group-item list-group-item-action list-group-item-light"
+                :class="{'active': itemSelected.name == item.name }"
+                @click.prevent="selectProduct(item)"
+              >
+                <img
+                  :src="item.imgUrl"
+                  alt="product-img"
+                  class="rounded img-fluid mt-3"
+                />
+                <div class="info mt-3">
+                  <p>{{item.name}}</p>
+                  <p>$ {{item.price}}</p>
+                </div>
+              </a>
+            </div>
           </div>
         </section>
-        <section class="select-area row">
-          <!-- <div
+        <section class="select-area">
+          <div class="row">
+            <!-- <div
             v-if="!itemSelected.name"
             class="position-absolute text-white d-flex align-items-center justify-content-center active"
             style="
@@ -58,74 +61,75 @@
           >
             請先選擇商品
           </div> -->
-          <div class="selection-left mt-5 col-lg-6 col-md-6">
-            <div class="order-size">
-              <label for="size" class="form-label d-block">尺寸 :</label>
-              <div
-                class="size form-check form-check-inline"
-                v-for="(item,key) in size"
-                :key="item+'key'"
-              >
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="size"
-                  :id="item"
-                  :value="item"
-                  v-model="itemSelected.size"
-                  :disabled="!itemSelected.name"
-                />
-                <label class="form-check-label" :for="item">{{item}}</label>
+            <div class="selection-left mt-5 col-md-6">
+              <div class="order-size">
+                <label for="size" class="form-label d-block">尺寸 :</label>
+                <div
+                  class="size form-check form-check-inline"
+                  v-for="(item,key) in size"
+                  :key="item+'key'"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="size"
+                    :id="item"
+                    :value="item"
+                    v-model="itemSelected.size"
+                    :disabled="!itemSelected.name"
+                  />
+                  <label class="form-check-label" :for="item">{{item}}</label>
+                </div>
+              </div>
+              <div class="order-addon mt-5">
+                <label for="addon" class="form-label d-block">加購道具 :</label>
+                <div
+                  class="addon form-check form-check-inline"
+                  v-for="(item,key) in addOns"
+                  :key="item+'key'"
+                >
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    :id="item"
+                    :value="item"
+                    v-model="itemSelected.addon"
+                    :disabled="!itemSelected.name"
+                  />
+                  <label :for="item" class="form-check-label">{{item}}</label>
+                </div>
               </div>
             </div>
-            <div class="order-addon mt-5">
-              <label for="addon" class="form-label d-block">加購道具 :</label>
-              <div
-                class="addon form-check form-check-inline"
-                v-for="(item,key) in addOns"
-                :key="item+'key'"
-              >
+            <div class="selection-right mt-5 col-md-6">
+              <div class="order-num">
+                <label for="num" class="form-label d-block">數量 :</label>
                 <input
-                  type="checkbox"
-                  class="form-check-input"
-                  :id="item"
-                  :value="item"
-                  v-model="itemSelected.addon"
+                  type="number"
+                  name="num"
+                  id="num"
+                  placeholder="需求數量"
+                  min="1"
+                  class="w-25"
+                  v-model="itemSelected.count"
                   :disabled="!itemSelected.name"
                 />
-                <label :for="item" class="form-check-label">{{item}}</label>
               </div>
-            </div>
-          </div>
-          <div class="selection-right mt-5 col-lg-6 col-md-6">
-            <div class="order-num">
-              <label for="num" class="form-label d-block">數量 :</label>
-              <input
-                type="number"
-                name="num"
-                id="num"
-                placeholder="需求數量"
-                min="0"
-                class="w-25"
-                v-model="itemSelected.count"
-                :disabled="!itemSelected.name"
-              />
-            </div>
-            <div class="notice mt-3">
-              <label for="notice" class="d-block">備註 :</label>
-              <textarea
-                class="form-control mt-3 w-75"
-                id="notice"
-                v-model="itemSelected.notice"
-                :disabled="!itemSelected.name"
-              ></textarea>
+              <div class="notice mt-3">
+                <label for="notice" class="d-block">備註 :</label>
+                <textarea
+                  class="form-control mt-3 w-75"
+                  id="notice"
+                  v-model="itemSelected.notice"
+                  :disabled="!itemSelected.name"
+                ></textarea>
+              </div>
             </div>
           </div>
         </section>
-        <div class="buttons d-flex mt-5 justify-content-end" style="bottom: 0">
+        <div class="buttons d-flex mt-5 justify-content-md-end">
           <button
             type="button"
-            class="btn btn-outline-dark mx-5"
+            class="btn btn-outline-dark mx-3"
             @click="resetOrder"
             :disabled="!itemSelected.name"
           >
@@ -133,7 +137,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-outline-dark"
+            class="btn btn-outline-dark mx-3"
             @click="addToOrder(itemSelected)"
             :disabled="!itemSelected.name"
           >
